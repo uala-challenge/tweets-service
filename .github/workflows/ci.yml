@@ -2,13 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
 
 jobs:
   lint:
@@ -40,11 +36,11 @@ jobs:
           version: v1.64.7
           args: >
             --timeout=5m
-            --tests=false  # Opcional: omitir pruebas en el análisis
+            --tests=false
             ./...
 
-  test:
-    name: Run Unit Tests
+  sonarcloud:
+    name: SonarCloud Analysis (With Test Coverage)
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -57,15 +53,40 @@ jobs:
           go-version: 'stable'
           check-latest: true
 
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
+      - name: Install SonarScanner
+        run: |
+          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner.zip
+          mv sonar-scanner-5.0.1.3006-linux sonar-scanner
+          echo "$GITHUB_WORKSPACE/sonar-scanner/bin" >> $GITHUB_PATH
+          rm sonar-scanner.zip
 
-      - name: Run Tests
-        run: go test -v ./...
+      - name: Run Unit Tests with Coverage
+        run: |
+          go test -coverprofile=coverage.out ./...
+
+      - name: Debug Coverage Report
+        run: |
+          if [ -f coverage.out ]; then
+            echo "Coverage report generated successfully."
+            echo "First 20 lines of coverage.out:"
+            head -20 coverage.out
+          else
+            echo "coverage.out was NOT generated!"
+            exit 1
+          fi
+
+      - name: Run SonarCloud Scan
+        run: |
+          if [ -f coverage.out ]; then
+            sonar-scanner \
+              -Dsonar.organization=uala-challenge \
+              -Dsonar.projectKey=uala-challenge_tweets-service \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+              -Dsonar.go.coverage.reportPaths=coverage.out \
+              -Dsonar.verbose=true
+          else
+            echo "Skipping SonarCloud scan because coverage.out was not generated."
+            exit 1
+          fi
