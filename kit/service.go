@@ -29,6 +29,45 @@ func BytesToModel[O any](c []byte) (O, error) {
 	return h, nil
 }
 
+func BytesToSlice[O any](c []byte) ([]O, error) {
+	var items []O
+	err := json.Unmarshal(c, &items)
+	if err == nil {
+		return items, nil
+	}
+	var rawItems []map[string]interface{}
+	err = json.Unmarshal(c, &rawItems)
+	if err != nil {
+		return nil, fmt.Errorf("error converting data to model - unmarshal: %w", err)
+	}
+	for _, raw := range rawItems {
+		var item O
+		cfg := &mapstructure.DecoderConfig{
+			Metadata: nil,
+			Result:   &item,
+			TagName:  "json",
+		}
+		decoder, err := mapstructure.NewDecoder(cfg)
+		if err != nil {
+			return nil, fmt.Errorf("error creating mapstructure decoder: %w", err)
+		}
+		if err := decoder.Decode(raw); err != nil {
+			return nil, fmt.Errorf("error converting data to model - mapstructure: %w", err)
+		}
+		items = append(items, item)
+	}
+
+	return items, nil
+}
+
+func SliceToBytes[O any](c []O) ([]byte, error) {
+	b, err := json.Marshal(c)
+	if err != nil {
+		return nil, fmt.Errorf("error converting struct to bytes: %w", err)
+	}
+	return b, nil
+}
+
 func StructToMap[O any](obj O) (map[string]interface{}, error) {
 	data, err := json.Marshal(obj)
 	if err != nil {

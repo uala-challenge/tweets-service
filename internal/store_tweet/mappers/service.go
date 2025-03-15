@@ -27,15 +27,15 @@ func TweetDynamoMap(rqt kit.TweetRequest, tweetID string) kit.DynamoItem {
 	}
 }
 
-func TweetSNSMap(rqt kit.DynamoItem) kit.TweetSNS {
-	return kit.TweetSNS{
+func TweetSNSMap(rqt kit.DynamoItem) kit.Tweet {
+	return kit.Tweet{
 		UserID:  rqt.SK,
 		TweetID: rqt.PK,
 		Created: rqt.Created,
 	}
 }
 
-func TweetToPublishInput(item kit.TweetSNS, topic string) *sns.PublishInput {
+func TweetToPublishInput(item kit.Tweet, topic string) *sns.PublishInput {
 	jsonBytes, _ := json.Marshal(item)
 	messageStr := string(jsonBytes)
 	return &sns.PublishInput{

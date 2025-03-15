@@ -31,12 +31,12 @@ func (s *service) Accept(ctx context.Context, pubInput *sns.PublishInput, retrie
 	for attempt := 1; attempt <= retries; attempt++ {
 		_, err := s.client.Publish(ctx, pubInput)
 		if err == nil {
-			s.log.Info(ctx, "Mensaje publicado en SNS", nil)
+			s.log.Info(ctx, "Mensaje publicado en SNSRepository", nil)
 			return nil
 		}
 
 		lastErr = err
-		s.log.Warn(ctx, "Reintentando publicación de mensaje en SNS...", map[string]interface{}{
+		s.log.Warn(ctx, "Reintentando publicación de mensaje en SNSRepository...", map[string]interface{}{
 			"attempt": attempt,
 			"error":   err.Error(),
 		})

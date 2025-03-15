@@ -19,8 +19,9 @@ type TweetPK struct {
 	TweetID string `json:"tweet_id"`
 }
 
-type TweetSNS struct {
+type Tweet struct {
 	UserID  string `json:"user_id"`
 	TweetID string `json:"tweet_id"`
 	Created int64  `json:"created"`
+	Content string `json:"content"`
 }

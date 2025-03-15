@@ -22,8 +22,8 @@ var _ Service = (*service)(nil)
 
 func NewService(d Dependencies) Service {
 	return &service{
-		sns:    d.SNS,
-		db:     d.DB,
+		sns:    d.SNSRepository,
+		db:     d.DBRepository,
 		log:    d.Log,
 		config: d.Config,
 	}

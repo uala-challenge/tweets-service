@@ -1,24 +1,23 @@
-package post_tweet
+package list_tweets
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
 	"github.com/uala-challenge/simple-toolkit/pkg/utilities/error_handler"
-	"github.com/uala-challenge/tweet-service/internal/store_tweet"
+	"github.com/uala-challenge/tweet-service/internal/batch_get_tweets"
 	"github.com/uala-challenge/tweet-service/kit"
 )
 
 type service struct {
-	useCase store_tweet.Service
+	useCase batch_get_tweets.Service
 }
 
 var _ Service = (*service)(nil)
 
 func NewService(d Dependencies) Service {
 	return &service{
-		useCase: d.UseCaseStoreTweet,
+		useCase: d.UseCaseListTweets,
 	}
 }
 
@@ -30,20 +29,17 @@ func (s service) Init(w http.ResponseWriter, r *http.Request) {
 	}
 	_ = r.Body.Close()
 
-	rqt, _ := kit.BytesToModel[kit.TweetRequest](body)
+	rqt, _ := kit.BytesToSlice[kit.TweetPK](body)
 
-	if err := rqt.Validate(); err != nil {
-		_ = error_handler.HandleApiErrorResponse(error_handler.NewCommonApiError("validate error", err.Error(), err, http.StatusBadRequest), w)
-		return
-	}
-
-	tweetId, err := s.useCase.Apply(r.Context(), rqt)
+	tweets, err := s.useCase.Apply(r.Context(), rqt)
 	if err != nil {
 		_ = error_handler.HandleApiErrorResponse(error_handler.NewCommonApiError("error processing tweet", err.Error(), err, http.StatusInternalServerError), w)
 		return
 	}
 
+	rps, _ := kit.SliceToBytes[kit.Tweet](tweets)
+
 	w.WriteHeader(http.StatusCreated)
-	_, _ = w.Write([]byte(fmt.Sprintf("tweet creado: %s", tweetId)))
+	_, _ = w.Write(rps)
 
 }

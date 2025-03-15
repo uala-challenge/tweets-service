@@ -14,10 +14,10 @@ type Service interface {
 }
 
 type Dependencies struct {
-	SNS    publish_tweet_event_sns.Service
-	DB     save_item.Service
-	Log    log.Service
-	Config Config
+	SNSRepository publish_tweet_event_sns.Service
+	DBRepository  save_item.Service
+	Log           log.Service
+	Config        Config
 }
 
 type Config struct {
