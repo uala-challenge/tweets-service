@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/mitchellh/mapstructure"
 )
@@ -12,6 +13,9 @@ func BytesToModel[O any](c []byte) (O, error) {
 	h := *new(O)
 	e := map[string]interface{}{}
 	err := json.Unmarshal(c, &e)
+	if err != nil {
+		return h, fmt.Errorf("error converting data to model - unmarshal: %w", err)
+	}
 	cfg := &mapstructure.DecoderConfig{
 		Metadata: nil,
 		Result:   &h,

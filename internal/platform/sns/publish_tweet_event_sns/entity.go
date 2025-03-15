@@ -2,6 +2,7 @@ package publish_tweet_event_sns
 
 import (
 	"context"
+
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/uala-challenge/simple-toolkit/pkg/utilities/log"
 )
