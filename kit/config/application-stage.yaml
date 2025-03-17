@@ -20,5 +20,6 @@ cases:
   store:
     topic: 'arn:aws:sns:us-east-1:000000000000:uala-challenge'
     retries: 3
+    table: 'UalaChallenge'
   retrieve:
     table: 'UalaChallenge'

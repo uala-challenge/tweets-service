@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	store_mock "github.com/uala-challenge/tweets-service/internal/store_tweet/mock"
 	"github.com/uala-challenge/tweets-service/kit"
-	"net/http"
-	"net/http/httptest"
-	"testing"
 )
 
 func TestPostTweet_Success(t *testing.T) {
