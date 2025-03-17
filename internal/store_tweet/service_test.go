@@ -3,8 +3,9 @@ package store_tweet
 import (
 	"context"
 	"errors"
-	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"testing"
+
+	"github.com/aws/aws-sdk-go-v2/service/sns"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

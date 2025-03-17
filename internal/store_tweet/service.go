@@ -2,6 +2,7 @@ package store_tweet
 
 import (
 	"context"
+
 	"github.com/uala-challenge/tweets-service/internal/platform/publish_tweet_event_sns"
 
 	"github.com/google/uuid"
