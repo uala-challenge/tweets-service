@@ -3,7 +3,7 @@ package post_tweet
 import (
 	"net/http"
 
-	"github.com/uala-challenge/tweet-service/internal/store_tweet"
+	"github.com/uala-challenge/tweets-service/internal/store_tweet"
 )
 
 type Service interface {

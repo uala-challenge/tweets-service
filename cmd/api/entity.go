@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/uala-challenge/tweet-service/cmd/api/get_tweet"
-	"github.com/uala-challenge/tweet-service/cmd/api/post_tweet"
-	"github.com/uala-challenge/tweet-service/internal/platform/db/uala_challenge/get_item"
-	"github.com/uala-challenge/tweet-service/internal/platform/db/uala_challenge/save_item"
-	"github.com/uala-challenge/tweet-service/internal/platform/sns/publish_tweet_event_sns"
-	"github.com/uala-challenge/tweet-service/internal/retrieve_tweet"
-	"github.com/uala-challenge/tweet-service/internal/store_tweet"
+	"github.com/uala-challenge/simple-toolkit/pkg/platform/db/get_item"
+	"github.com/uala-challenge/simple-toolkit/pkg/platform/db/save_item"
+	"github.com/uala-challenge/tweets-service/cmd/api/get_tweet"
+	"github.com/uala-challenge/tweets-service/cmd/api/post_tweet"
+	"github.com/uala-challenge/tweets-service/internal/platform/publish_tweet_event_sns"
+	"github.com/uala-challenge/tweets-service/internal/retrieve_tweet"
+	"github.com/uala-challenge/tweets-service/internal/store_tweet"
 )
 
 type repositories struct {

@@ -1,0 +1,43 @@
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sns,sqs,dynamodb
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - GATEWAY_LISTEN=0.0.0.0:4566
+      - EAGER_SERVICE_LOADING=1
+    volumes:
+      - "localstack-data:/var/lib/localstack"
+      - "./scripts/init-localstack.sh:/etc/localstack/init/ready.d/init-localstack.sh"
+    networks:
+      - ualanet
+
+  tweets-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tweets-service:latest
+    container_name: tweets-service
+    depends_on:
+      localstack:
+        condition: service_healthy
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_REGION=us-east-1
+    networks:
+      - ualanet
+    ports:
+      - "8085:8080"
+
+networks:
+  ualanet:
+    driver: bridge
+
+volumes:
+  localstack-data:
+    driver: local

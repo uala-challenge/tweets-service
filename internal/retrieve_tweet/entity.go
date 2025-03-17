@@ -3,9 +3,9 @@ package retrieve_tweet
 import (
 	"context"
 
+	"github.com/uala-challenge/simple-toolkit/pkg/platform/db/get_item"
 	"github.com/uala-challenge/simple-toolkit/pkg/utilities/log"
-	"github.com/uala-challenge/tweet-service/internal/platform/db/uala_challenge/get_item"
-	"github.com/uala-challenge/tweet-service/kit"
+	"github.com/uala-challenge/tweets-service/kit"
 )
 
 type Service interface {
@@ -15,4 +15,9 @@ type Service interface {
 type Dependencies struct {
 	DBRepository get_item.Service
 	Log          log.Service
+	Config       Config
+}
+
+type Config struct {
+	Table string `json:"table"`
 }

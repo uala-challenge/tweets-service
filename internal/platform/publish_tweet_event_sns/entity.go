@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/sns"
+	sns2 "github.com/uala-challenge/simple-toolkit/pkg/client/sns"
+
 	"github.com/uala-challenge/simple-toolkit/pkg/utilities/log"
 )
 
@@ -12,6 +14,6 @@ type Service interface {
 }
 
 type Dependencies struct {
-	Client *sns.Client
+	Client *sns2.Sns
 	Log    log.Service
 }

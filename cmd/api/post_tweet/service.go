@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/uala-challenge/simple-toolkit/pkg/utilities/error_handler"
-	"github.com/uala-challenge/tweet-service/internal/store_tweet"
-	"github.com/uala-challenge/tweet-service/kit"
+	"github.com/uala-challenge/tweets-service/internal/store_tweet"
+	"github.com/uala-challenge/tweets-service/kit"
 )
 
 type service struct {

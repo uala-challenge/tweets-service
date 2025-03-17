@@ -1,25 +1,24 @@
 package main
 
 import (
+	"github.com/uala-challenge/simple-toolkit/pkg/platform/db/get_item"
+	"github.com/uala-challenge/simple-toolkit/pkg/platform/db/save_item"
 	"github.com/uala-challenge/simple-toolkit/pkg/simplify/app_builder"
 	"github.com/uala-challenge/simple-toolkit/pkg/simplify/app_engine"
-	"github.com/uala-challenge/tweet-service/cmd/api/get_tweet"
-	"github.com/uala-challenge/tweet-service/cmd/api/post_tweet"
-	"github.com/uala-challenge/tweet-service/internal/platform/db/uala_challenge/get_item"
-	"github.com/uala-challenge/tweet-service/internal/platform/db/uala_challenge/save_item"
-	publish_tweet_event_sns2 "github.com/uala-challenge/tweet-service/internal/platform/sns/publish_tweet_event_sns"
-	"github.com/uala-challenge/tweet-service/internal/retrieve_tweet"
-	"github.com/uala-challenge/tweet-service/internal/store_tweet"
-	"github.com/uala-challenge/tweet-service/kit/config"
+	"github.com/uala-challenge/tweets-service/cmd/api/get_tweet"
+	"github.com/uala-challenge/tweets-service/cmd/api/post_tweet"
+	publish_tweet_event_sns2 "github.com/uala-challenge/tweets-service/internal/platform/publish_tweet_event_sns"
+	"github.com/uala-challenge/tweets-service/internal/retrieve_tweet"
+	"github.com/uala-challenge/tweets-service/internal/store_tweet"
+	"github.com/uala-challenge/tweets-service/kit/config"
 )
 
 type engine struct {
-	simplify         app_engine.Engine
-	repositories     repositories
-	useCases         useCases
-	handlers         handlers
-	repositoryConfig config.RepositoryConfig
-	useCasesConfig   config.UsesCasesConfig
+	simplify       app_engine.Engine
+	repositories   repositories
+	useCases       useCases
+	handlers       handlers
+	useCasesConfig config.UsesCasesConfig
 }
 
 type AppBuilder struct {
@@ -42,7 +41,6 @@ func (a engine) Run() error {
 }
 
 func (a AppBuilder) LoadConfig() app_builder.Builder {
-	a.engine.repositoryConfig = app_engine.GetConfig[config.RepositoryConfig](a.engine.simplify.RepositoriesConfig)
 	a.engine.useCasesConfig = app_engine.GetConfig[config.UsesCasesConfig](a.engine.simplify.UsesCasesConfig)
 	return a
 }
@@ -55,11 +53,9 @@ func (a AppBuilder) InitRepositories() app_builder.Builder {
 	a.engine.repositories.SaveTweet = save_item.NewService(save_item.Dependencies{
 		Client: a.engine.simplify.DynamoDBClient,
 		Log:    a.engine.simplify.Log,
-		Config: a.engine.repositoryConfig.DataBase,
 	})
 	a.engine.repositories.GetTweet = get_item.NewService(get_item.Dependencies{
 		Client: a.engine.simplify.DynamoDBClient,
-		Config: a.engine.repositoryConfig.DataBase,
 		Log:    a.engine.simplify.Log,
 	})
 	return a

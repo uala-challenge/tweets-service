@@ -5,11 +5,12 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/sns"
+	sns2 "github.com/uala-challenge/simple-toolkit/pkg/client/sns"
 	"github.com/uala-challenge/simple-toolkit/pkg/utilities/log"
 )
 
 type service struct {
-	client *sns.Client
+	client *sns2.Sns
 	log    log.Service
 }
 
@@ -29,7 +30,7 @@ func (s *service) Accept(ctx context.Context, pubInput *sns.PublishInput, retrie
 	}
 	var lastErr error
 	for attempt := 1; attempt <= retries; attempt++ {
-		_, err := s.client.Publish(ctx, pubInput)
+		_, err := s.client.Cliente.Publish(ctx, pubInput)
 		if err == nil {
 			s.log.Info(ctx, "Mensaje publicado en SNSRepository", nil)
 			return nil

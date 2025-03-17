@@ -1,4 +1,4 @@
-# Default properties file for global environment
+# Properties file for docker test
 router:
   port: '8080'
   name: 'tweets-service'
@@ -11,14 +11,10 @@ aws:
   region: 'us-east-1'
 
 dynamo:
-  endpoint: 'http://localhost:4566'
+  endpoint: 'http://localstack:4566'
 
 sns:
-  endpoint: 'http://localhost:4566'
-
-repositories:
-  database:
-    table: 'UalaChallenge'
+  endpoint: 'http://localstack:4566'
 
 cases:
   store:

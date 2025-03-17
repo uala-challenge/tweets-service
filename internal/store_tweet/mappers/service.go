@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
-	"github.com/uala-challenge/tweet-service/kit"
+	"github.com/uala-challenge/tweets-service/kit"
 )
 
 var prefixes = map[string]string{

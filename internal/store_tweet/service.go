@@ -2,13 +2,13 @@ package store_tweet
 
 import (
 	"context"
+	"github.com/uala-challenge/tweets-service/internal/platform/publish_tweet_event_sns"
 
 	"github.com/google/uuid"
+	"github.com/uala-challenge/simple-toolkit/pkg/platform/db/save_item"
 	"github.com/uala-challenge/simple-toolkit/pkg/utilities/log"
-	"github.com/uala-challenge/tweet-service/internal/platform/db/uala_challenge/save_item"
-	"github.com/uala-challenge/tweet-service/internal/platform/sns/publish_tweet_event_sns"
-	"github.com/uala-challenge/tweet-service/internal/store_tweet/mappers"
-	"github.com/uala-challenge/tweet-service/kit"
+	"github.com/uala-challenge/tweets-service/internal/store_tweet/mappers"
+	"github.com/uala-challenge/tweets-service/kit"
 )
 
 type service struct {
@@ -36,7 +36,7 @@ func (s service) Apply(ctx context.Context, rqt kit.TweetRequest) (string, error
 	if err != nil {
 		return "", s.log.WrapError(err, "Error al mapear tweet")
 	}
-	err = s.db.Accept(ctx, tweetDynamo)
+	err = s.db.Accept(ctx, tweetDynamo, s.config.Table)
 	if err != nil {
 		return "", s.log.WrapError(err, "Error al guardar tweet")
 	}

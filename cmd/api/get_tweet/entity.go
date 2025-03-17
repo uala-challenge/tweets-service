@@ -3,7 +3,7 @@ package get_tweet
 import (
 	"net/http"
 
-	"github.com/uala-challenge/tweet-service/internal/retrieve_tweet"
+	"github.com/uala-challenge/tweets-service/internal/retrieve_tweet"
 )
 
 type Service interface {

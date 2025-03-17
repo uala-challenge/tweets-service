@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/uala-challenge/simple-toolkit/pkg/utilities/error_handler"
 
-	"github.com/uala-challenge/tweet-service/internal/retrieve_tweet"
+	"github.com/uala-challenge/tweets-service/internal/retrieve_tweet"
 )
 
 type service struct {
