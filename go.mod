@@ -13,7 +13,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/stretchr/testify v1.10.0
 	github.com/swaggo/swag v1.16.4
-	github.com/uala-challenge/simple-toolkit v0.0.22-test
+	github.com/uala-challenge/simple-toolkit v1.0.1
 )
 
 require (
@@ -44,7 +44,11 @@ require (
 	github.com/go-openapi/swag v0.23.1 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
+	github.com/go-redsync/redsync/v4 v4.13.0 // indirect
+	github.com/go-resty/resty/v2 v2.16.5 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/magefile/mage v1.15.0 // indirect
@@ -55,6 +59,7 @@ require (
 	github.com/redis/go-redis/v9 v9.7.1 // indirect
 	github.com/sagikazarmark/locafero v0.8.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
+	github.com/sony/gobreaker/v2 v2.1.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.14.0 // indirect
 	github.com/spf13/cast v1.7.1 // indirect
