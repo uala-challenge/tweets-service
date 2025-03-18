@@ -1,0 +1,135 @@
+basePath: /
+definitions:
+  kit.CommonApiError:
+    properties:
+      code:
+        description: |-
+          Código del error.
+          example: "ERR-400"
+        type: string
+      msg:
+        description: |-
+          Mensaje descriptivo del error.
+          example: "Solicitud incorrecta"
+        type: string
+    type: object
+  kit.Tweet:
+    properties:
+      content:
+        description: |-
+          Contenido del tweet.
+          example: "Este es un tweet de prueba."
+        type: string
+      created:
+        description: |-
+          Fecha de creación del tweet en formato UNIX timestamp.
+          example: 1710597823
+        type: integer
+      tweet_id:
+        description: |-
+          ID único del tweet.
+          example: "tweet:67890"
+        type: string
+      user_id:
+        description: |-
+          ID del usuario propietario del tweet.
+          example: "user:12345"
+        type: string
+    type: object
+  kit.TweetRequest:
+    properties:
+      tweet:
+        description: |-
+          Contenido del tweet.
+          Required: true
+          Max length: 280 caracteres
+          example: "Este es un tweet de prueba con una longitud adecuada."
+        maxLength: 280
+        type: string
+      user_id:
+        description: |-
+          ID del usuario que publica el tweet.
+          Required: true
+          example: "user:12345"
+        type: string
+    required:
+    - tweet
+    - user_id
+    type: object
+host: localhost:8084
+info:
+  contact:
+    email: hfredy717@outlook.com
+    name: Fredy Hernandez
+  description: Servicio que maneja la publicación y consulta de tweets.
+  title: tweets-service
+  version: "1.0"
+paths:
+  /tweets:
+    post:
+      consumes:
+      - application/json
+      description: Permite a los usuarios publicar un nuevo tweet, almacenarlo en
+        la base de datos y enviarlo a la cola de mensajes para su procesamiento asincrónico.
+      parameters:
+      - description: Datos del tweet a publicar
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/kit.TweetRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Tweet creado correctamente
+          schema:
+            type: string
+        "400":
+          description: Solicitud incorrecta
+          schema:
+            $ref: '#/definitions/kit.CommonApiError'
+        "500":
+          description: Error interno del servidor
+          schema:
+            $ref: '#/definitions/kit.CommonApiError'
+      summary: Publicar un tweet
+      tags:
+      - tweets
+  /tweets/{user_id}/{tweet_id}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna un tweet basado en el `user_id` y `tweet_id` proporcionados.
+      parameters:
+      - description: ID del usuario propietario del tweet
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: ID del tweet a consultar
+        in: path
+        name: tweet_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Tweet obtenido correctamente
+          schema:
+            $ref: '#/definitions/kit.Tweet'
+        "400":
+          description: Solicitud incorrecta
+          schema:
+            $ref: '#/definitions/kit.CommonApiError'
+        "500":
+          description: Error interno del servidor
+          schema:
+            $ref: '#/definitions/kit.CommonApiError'
+      summary: Obtener un tweet específico
+      tags:
+      - tweets
+schemes:
+- http
+swagger: "2.0"

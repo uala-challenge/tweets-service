@@ -1,12 +1,14 @@
 package main
 
 import (
+	httpSwagger "github.com/swaggo/http-swagger"
 	"github.com/uala-challenge/simple-toolkit/pkg/platform/db/get_item"
 	"github.com/uala-challenge/simple-toolkit/pkg/platform/db/save_item"
 	"github.com/uala-challenge/simple-toolkit/pkg/simplify/app_builder"
 	"github.com/uala-challenge/simple-toolkit/pkg/simplify/app_engine"
 	"github.com/uala-challenge/tweets-service/cmd/api/get_tweet"
 	"github.com/uala-challenge/tweets-service/cmd/api/post_tweet"
+	_ "github.com/uala-challenge/tweets-service/docs"
 	publish_tweet_event_sns2 "github.com/uala-challenge/tweets-service/internal/platform/publish_tweet_event_sns"
 	"github.com/uala-challenge/tweets-service/internal/retrieve_tweet"
 	"github.com/uala-challenge/tweets-service/internal/store_tweet"
@@ -84,6 +86,7 @@ func (a AppBuilder) InitHandlers() app_builder.Builder {
 func (a AppBuilder) InitRoutes() app_builder.Builder {
 	a.engine.simplify.App.Router.Post("/tweet", a.engine.handlers.PostTweet.Init)
 	a.engine.simplify.App.Router.Get("/tweet/{tweet_id}/user/{user_id}", a.engine.handlers.GetTweet.Init)
+	a.engine.simplify.App.Router.Get("/swagger/*", httpSwagger.WrapHandler)
 	return a
 }
 
